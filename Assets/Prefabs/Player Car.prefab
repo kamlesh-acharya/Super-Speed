@@ -4966,6 +4966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3982cbe2adc63e4b9dab67276beb5cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAI: 1
   theRB: {fileID: 5489681556977983253}
   maxSpeed: 30
   forwardAccelaration: 8
@@ -4992,6 +4993,14 @@ MonoBehaviour:
   skidSound: {fileID: 5489681555873039704}
   skidFadeTime: 2
   currentLap: 1
+  lapTime: 0
+  bestLapTime: 0
+  currentTarget: 0
+  aiAccelerateSpeed: 1
+  aiTurnSpeed: 0.8
+  aiReachPointRange: 5
+  aiPointVariance: 3
+  aiMaxTurn: 30
 --- !u!81 &5489681555957616516
 AudioListener:
   m_ObjectHideFlags: 0
