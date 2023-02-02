@@ -40,17 +40,37 @@ public class CarController : MonoBehaviour
     private float maxEmission = 25f, emissionFadeSpeed = 20f;
     private float emissionRate;
 
+    [SerializeField]
+    private AudioSource engineSound;
+    [SerializeField]
+    private AudioSource skidSound;
+    [SerializeField]
+    private float skidFadeTime = 2f;
+
+    private int nextCheckPoint;
+    [SerializeField]
+    private int currentLap = 1;
+
+    [SerializeField]
+    private float lapTime, bestLapTime;
+
+
     // Start is called before the first frame update
     void Start()
     {
         theRB.transform.parent = null;
         dragOnGround = theRB.drag;
-
+        UIManager.Instance.SetLapCounterText(currentLap);
     }
 
     // Update is called once per frame
     void Update()
     {
+        lapTime += Time.deltaTime;
+
+        var ts = System.TimeSpan.FromSeconds(lapTime);
+        UIManager.Instance.SetCurrentLapTimeText(string.Format("{0:00}m{1:00}.{2:000}s", ts.Minutes, ts.Seconds, ts.Milliseconds));
+
         speedInput = 0f;
 
         //Moving forward Backward
@@ -66,11 +86,11 @@ public class CarController : MonoBehaviour
         //Turning Left and Right
         turnInput = Input.GetAxis("Horizontal");
 
-        if(isGrounded && Input.GetAxis("Vertical") != 0)
+        /* if(isGrounded && Input.GetAxis("Vertical") != 0)
         {
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * turnStregth * Time.deltaTime * Mathf.Sign(speedInput) * (theRB.velocity.magnitude / maxSpeed), 0f));
-        }
-        transform.position = theRB.transform.position;
+        } */
+        //transform.position = theRB.transform.position;
 
         //Turning Wheels
         leftFrontWheel.localRotation = Quaternion.Euler(leftFrontWheel.localRotation.eulerAngles.x, (turnInput * maxWheelTurn) - 180, leftFrontWheel.localRotation.eulerAngles.z);
@@ -95,6 +115,23 @@ public class CarController : MonoBehaviour
             var emissionModule = dustTrail[i].emission;
 
             emissionModule.rateOverTime = emissionRate;
+        }
+
+        if(engineSound != null)
+        {
+            engineSound.pitch = 1f + ((theRB.velocity.magnitude / maxSpeed) * 2f);
+        }
+
+        if (skidSound != null)
+        {
+            if (Mathf.Abs(turnInput) > 0.5f && theRB.velocity.magnitude > maxSpeed * 0.2f)
+            {
+                skidSound.volume = 1f;
+            }
+            else
+            {
+                skidSound.volume = Mathf.MoveTowards(skidSound.volume, 0f, skidFadeTime * Time.deltaTime);
+            }
         }
     }
 
@@ -142,6 +179,63 @@ public class CarController : MonoBehaviour
         {
             theRB.velocity = theRB.velocity.normalized * maxSpeed;
         }
-        Debug.Log("Speed: " + theRB.velocity.magnitude);
+
+        //Debug.Log("Speed: " + theRB.velocity.magnitude);
+
+        transform.position = theRB.transform.position;
+
+        if(isGrounded && Input.GetAxis("Vertical") != 0)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * turnStregth * Time.deltaTime * Mathf.Sign(speedInput) * (theRB.velocity.magnitude / maxSpeed), 0f));
+
+        }
+
+        //if (turnInput != 0)
+        //{
+        //    if (!skidSound.isPlaying && isGrounded)
+        //    {
+        //        skidSound.Play();
+        //    }
+        //}
+        //else
+        //{
+        //    skidSound.Stop();
+        //}
+    }
+
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
+    }
+
+    public void CheckPointHit(int cpNumber)
+    {
+        if(cpNumber == nextCheckPoint)
+        {
+            nextCheckPoint++;
+
+            if(nextCheckPoint == RaceManager.Instance.GetAllCheckPoints().Length)
+            {
+                nextCheckPoint = 0;
+                LapCompleted();
+            }
+        }
+    }
+
+    public void LapCompleted()
+    {
+        currentLap++;
+
+        if(lapTime < bestLapTime || bestLapTime == 0)
+        {
+            bestLapTime = lapTime;
+        }
+
+        var ts = System.TimeSpan.FromSeconds(bestLapTime);
+        UIManager.Instance.SetBestLapTimeText(string.Format("{0:00}m{1:00}.{2:000}s", ts.Minutes, ts.Seconds, ts.Milliseconds));
+
+        lapTime = 0;
+
+        UIManager.Instance.SetLapCounterText(currentLap);
     }
 }
