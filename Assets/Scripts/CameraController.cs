@@ -15,6 +15,9 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Transform startTargetOffser;
 
+    [SerializeField]
+    private Rigidbody targetRB;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,9 +32,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        actionDistance = minDistance + ((maxDistance - minDistance) * (GameObject.FindGameObjectWithTag("CarRB").GetComponent<Rigidbody>().velocity.magnitude / target.GetMaxSpeed()));
+        actionDistance = minDistance + ((maxDistance - minDistance) * (targetRB.velocity.magnitude / target.GetMaxSpeed()));
         transform.position = target.transform.position + (offSetDir * actionDistance);
-
     }
 
 }

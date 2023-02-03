@@ -4830,7 +4830,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 7244528666688853655, guid: 8754c5ae00996ab409f27a009edd515c,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 3f54d606a50fd2845b692ee955c99e9f, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0
   m_Pitch: 1
   Loop: 1
@@ -4966,7 +4966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3982cbe2adc63e4b9dab67276beb5cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAI: 1
+  isAI: 0
   theRB: {fileID: 5489681556977983253}
   maxSpeed: 30
   forwardAccelaration: 8
