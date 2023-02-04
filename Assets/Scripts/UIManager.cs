@@ -10,8 +10,9 @@ public class UIManager : MonoBehaviour
     private TMP_Text currentLapNumberText, bestLapTimeText, currentLapTimeText, playerPositionText, countdownText, goText, raceResultText;
 
     [SerializeField]
-    private GameObject resultScreen;
+    private GameObject resultScreen, pauseScreen;
 
+    private bool isPaused;
 
     private static UIManager _instance;
     public static UIManager Instance
@@ -29,6 +30,39 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseUnpause();
+        }
+    }
+
+    public void PauseUnpause()
+    {
+        isPaused = !isPaused;
+        pauseScreen.SetActive(isPaused);
+
+        if (isPaused)
+        {
+            Time.timeScale = 0f;
+        } else
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void ExitRace()
+    {
+        Time.timeScale = 1f;
+        RaceManager.Instance.ExitRace();
     }
 
     public void SetLapCounterText(int currentLap)
@@ -93,7 +127,7 @@ public class UIManager : MonoBehaviour
         switch (position)
         {
             case 1: playerPosition = position + "st"; break;
-            case 2: playerPosition = position + "nt"; break;
+            case 2: playerPosition = position + "nd"; break;
             case 3: playerPosition = position + "rd"; break;
             default: playerPosition = position + "th"; break;
         }
@@ -108,8 +142,4 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ExitRace()
-    {
-        RaceManager.Instance.ExitRace();
-    }
 }

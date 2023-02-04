@@ -344,7 +344,6 @@ MonoBehaviour:
   minDistance: 20
   maxDistance: 50
   startTargetOffser: {fileID: 1306682117}
-  targetRB: {fileID: 0}
 --- !u!1 &2674145495430774866
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,3 +459,5 @@ MonoBehaviour:
   cameras:
   - {fileID: 2674145495162437614}
   - {fileID: 2674145495116758847}
+  topDownCam: {fileID: 2674145495162437618}
+  cineCam: {fileID: 2674145495430774869}

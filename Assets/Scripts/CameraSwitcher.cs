@@ -7,7 +7,30 @@ public class CameraSwitcher : MonoBehaviour
     [SerializeField]
     private GameObject[] cameras;
     private int currentCam;
-    
+
+    [SerializeField]
+    private CameraController topDownCam;
+    [SerializeField]
+    private Cinemachine.CinemachineVirtualCamera cineCam;
+
+    private static CameraSwitcher _instance;
+    public static CameraSwitcher Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                Debug.LogError("CameraSwitcher is Null");
+            }
+            return _instance;
+        }
+    }
+
+    private void Awake()
+    {
+        _instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,5 +59,12 @@ public class CameraSwitcher : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetTarget(CarController playerCar)
+    {
+        topDownCam.SetTarget(playerCar);
+        cineCam.m_Follow = playerCar.transform;
+        cineCam.m_LookAt = playerCar.transform;
     }
 }

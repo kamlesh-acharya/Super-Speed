@@ -9,10 +9,9 @@ public class CheckpointChecker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "CheckPoint")
+        if(other.tag == "Checkpoint")
         {
             theCar.CheckPointHit(other.GetComponent<Checkpoint>().GetCheckPointNumber());
-            
         }
     }
 }

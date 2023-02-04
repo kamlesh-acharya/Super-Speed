@@ -299,6 +299,16 @@ public class CarController : MonoBehaviour
         return currentLap;
     }
 
+    public Rigidbody GetTheRB()
+    {
+        return theRB;
+    }
+
+    public void SetIsAI(bool value)
+    {
+        isAI = value;
+    }
+
     public void SetCarPosition(Transform _transform)
     {
         transform.position = _transform.position;

@@ -66,6 +66,9 @@ public class RaceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        totalLaps = RaceInfoManager.Instance.GetNoOfLaps();
+        aiNumberToSpawn = RaceInfoManager.Instance.GetNoOfAI();
+
         for (int i = 0; i < allCheckpoints.Length; i++)
         {
             allCheckpoints[i].SetCheckPointNumber(i);
@@ -77,9 +80,18 @@ public class RaceManager : MonoBehaviour
 
         playerStartPosition = Random.Range(0, aiNumberToSpawn + 1);
 
-        playerCar.SetCarPosition(startPoints[playerStartPosition].transform);
+        playerCar = Instantiate(RaceInfoManager.Instance.GetRacerToUse(), startPoints[playerStartPosition].position, startPoints[playerStartPosition].rotation);
+        playerCar.SetIsAI(false);
+        playerCar.GetComponent<AudioListener>().enabled = true;
+        playerCar.transform.Find("Skid Sound").GetComponent<AudioSource>().spatialBlend = 0;
 
-        for(int i = 0; i < aiNumberToSpawn + 1; i++)
+        CameraSwitcher.Instance.SetTarget(playerCar);
+
+        UIManager.Instance.SetPlayerPositionText(playerStartPosition + 1);
+
+        //playerCar.SetCarPosition(startPoints[playerStartPosition].transform);
+
+        for (int i = 0; i < aiNumberToSpawn + 1; i++)
         {
             if(i != playerStartPosition)
             {
@@ -179,7 +191,8 @@ public class RaceManager : MonoBehaviour
 
     public int GetAllCarsCount()
     {
-        return allAICars.Count + 1;
+        //return allAICars.Count + 1;
+        return aiNumberToSpawn + 1;
     }
 
     public bool GetIsStarting()
