@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackToLoad: Track 1
-  racerToUse: {fileID: 842380466327274704, guid: 0cf4efcdbd0c97f4992d2ae5f4b4cd49,
+  racerToUse: {fileID: 4188033293815603869, guid: dc0a126a7f9323c45af79abe8b8e9924,
     type: 3}
   noOfAI: 7
   noOfLaps: 3
+  trackSprite: {fileID: 21300000, guid: 75901588e46f98e49b4131d86b2d491a, type: 3}
+  carSprite: {fileID: 21300000, guid: 3b7ccaca117794b4080bfc13d28078ae, type: 3}
